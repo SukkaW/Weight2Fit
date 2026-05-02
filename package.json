@@ -3,24 +3,35 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
+    "dev": "next dev --webpack",
+    "build": "next build --webpack",
     "lint": "eslint --format=sukka ."
   },
   "dependencies": {
-    "eslint-config-sukka": "^8.10.1",
-    "eslint-formatter-sukka": "^8.10.1",
+    "@garmin/fitsdk": "^21.202.0",
+    "@icons-pack/react-simple-icons": "^13.13.0",
+    "@stylexjs/stylex": "^0.18.3",
+    "foxact": "^0.3.1",
+    "foxts": "^5.4.1",
+    "lucide-react": "^1.14.0",
+    "minireset.css": "^0.0.7",
+    "modern-normalize": "^3.0.1",
     "next": "16.2.4",
     "react": "19.2.4",
-    "react-dom": "19.2.4"
+    "react-dom": "19.2.4",
+    "react-hook-form": "^7.75.0"
   },
   "devDependencies": {
     "@eslint-sukka/react": "^8.10.1",
+    "@stylexjs/babel-plugin": "^0.18.3",
     "@types/node": "^25.6.0",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "babel-plugin-react-compiler": "1.0.0",
+    "eslint": "^10.3.0",
+    "eslint-config-sukka": "^8.10.1",
+    "eslint-formatter-sukka": "^8.10.1",
+    "stylex-webpack": "^0.4.13",
     "typescript": "^6.0.3"
   },
   "packageManager": "pnpm@11.0.3"
