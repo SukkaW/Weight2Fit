@@ -1,6 +1,6 @@
 # Weight2Fit
 
-https://weight2fit.skk.moe
+https://w2fit.skk.moe
 
 Convert body composition data into a Garmin-compatible `.fit` file — entirely in your browser, with no server involved.
 

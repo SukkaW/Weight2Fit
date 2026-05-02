@@ -109,7 +109,7 @@ export function Header() {
       <header {...stylex.props(styles.header)}>
         <div {...stylex.props(styles.brand)}>
           <div {...stylex.props(styles.logo)}>
-            <div {...stylex.props(styles.logoMark)}>W2</div>
+            <div {...stylex.props(styles.logoMark)}>W2F</div>
             <span {...stylex.props(styles.logoName)}>Weight2Fit</span>
           </div>
         </div>
