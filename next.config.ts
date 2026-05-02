@@ -4,5 +4,6 @@ export default withStyleX()({
   output: 'export',
   /* config options here */
   reactCompiler: true,
-  reactStrictMode: true
+  reactStrictMode: true,
+  images: { unoptimized: true }
 });

@@ -294,7 +294,7 @@ export function Step2({ form, unit, onBack, onNext }: Step2Props) {
         </button>
         {generated && (
           <button type="button" {...stylex.props(styles.btn)} onClick={onNext}>
-            Upload Instructions <IconChevronRight size={16} />
+            I've downloaded the file <IconChevronRight size={16} />
           </button>
         )}
       </div>
