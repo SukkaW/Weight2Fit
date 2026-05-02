@@ -100,6 +100,21 @@ const styles = stylex.create({
     color: 'var(--accent)',
     height: '18px',
     width: '18px'
+  },
+  tagline: {
+    fontSize: '14px',
+    color: 'var(--fg-muted)',
+    lineHeight: 1.65,
+    fontWeight: 300,
+    marginBottom: '20px'
+  },
+  taglineCode: {
+    fontFamily: 'var(--font-mono), monospace',
+    fontSize: '12.5px',
+    backgroundColor: 'var(--code-bg)',
+    paddingBlock: '1px',
+    paddingInline: '5px',
+    borderRadius: '4px'
   }
 });
 
@@ -121,6 +136,9 @@ export function Header() {
           </a>
         </div>
       </header>
+      <p {...stylex.props(styles.tagline)}>
+        Convert your body composition data into a Garmin-compatible <code {...stylex.props(styles.taglineCode)}>.fit</code> file that you can upload to Garmin Connect
+      </p>
       <div {...stylex.props(styles.meta)}>
         <IconShield {...stylex.props(styles.meta_icon)} />
         <span>
