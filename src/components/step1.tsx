@@ -1,7 +1,7 @@
 'use client';
 
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useDeferredValue, useMemo, useState } from 'react';
+import { FormProvider, useForm, useWatch } from 'react-hook-form';
 import type { ReactNode } from 'react';
 import * as stylex from '@stylexjs/stylex';
 import type { FormValues, Unit } from '@/lib/types';
@@ -92,7 +92,7 @@ const styles = stylex.create({
     backgroundColor: 'transparent',
     borderStyle: 'none',
     outlineStyle: 'none',
-    fontFamily: 'var(--font-dm-mono), monospace',
+    fontFamily: 'var(--font-mono), monospace',
     fontSize: '14px',
     color: 'var(--fg)',
     textAlign: 'right',
@@ -116,7 +116,7 @@ const styles = stylex.create({
   unit: {
     fontSize: '12px',
     color: 'var(--fg-subtle)',
-    fontFamily: 'var(--font-dm-mono), monospace',
+    fontFamily: 'var(--font-mono), monospace',
     flexShrink: 0
   },
   badgeAuto: {
@@ -128,10 +128,10 @@ const styles = stylex.create({
     paddingBlock: '1px',
     paddingInline: '5px',
     borderRadius: '4px',
-    fontFamily: 'var(--font-dm-mono), monospace'
+    fontFamily: 'var(--font-mono), monospace'
   },
   bmiVal: {
-    fontFamily: 'var(--font-dm-mono), monospace',
+    fontFamily: 'var(--font-mono), monospace',
     fontSize: '14px',
     fontWeight: 500,
     flexGrow: '1',
@@ -144,7 +144,7 @@ const styles = stylex.create({
     color: 'var(--fg-subtle)'
   },
   bmiEmpty: {
-    fontFamily: 'var(--font-dm-mono), monospace',
+    fontFamily: 'var(--font-mono), monospace',
     fontSize: '14px',
     color: 'var(--fg-subtle)',
     flexGrow: '1',
@@ -169,7 +169,7 @@ const styles = stylex.create({
     paddingBlock: '3px',
     paddingInline: '10px',
     borderRadius: '99px',
-    fontFamily: 'var(--font-dm-mono), monospace',
+    fontFamily: 'var(--font-mono), monospace',
     fontSize: '11.5px',
     fontWeight: 500,
     color: 'var(--fg-subtle)',
@@ -232,6 +232,32 @@ function Field({ label, badge, children }: { label: string, badge?: string, chil
   );
 }
 
+function BmiDisplay({ unit }: { unit: Unit }) {
+  const weight = useWatch({ name: 'weight', defaultValue: '0' });
+  const height = useWatch({ name: 'height', defaultValue: '0' });
+
+  const deferredWeight = useDeferredValue(weight);
+  const deferredHeight = useDeferredValue(height);
+
+  const bmi = useMemo(() => calcBMI(deferredWeight, deferredHeight, unit), [deferredWeight, deferredHeight, unit]);
+  const bmiI = bmiInfo(bmi);
+
+  return (
+    <Field label="BMI" badge="AUTO CALCULATED">
+      {bmi
+        ? (
+          <>
+            <span {...stylex.props(styles.bmiVal)} style={{ color: bmiI?.color }}>{bmi}</span>
+            <span {...stylex.props(styles.bmiLabel)}>{bmiI?.label}</span>
+          </>
+        )
+        : (
+          <span {...stylex.props(styles.bmiEmpty)}>—</span>
+        )}
+    </Field>
+  );
+}
+
 interface Step1Props {
   onNext: (values: FormValues, unit: Unit) => void
 }
@@ -241,7 +267,8 @@ export function Step1({ onNext }: Step1Props) {
   const wU = unit === 'metric' ? 'kg' : 'lbs';
   const hU = unit === 'metric' ? 'cm' : 'in';
 
-  const { register, handleSubmit, watch, setValue } = useForm<FormValues>({
+  const form = useForm<FormValues>({
+    mode: 'onChange',
     defaultValues: {
       timestamp: '',
       weight: '', height: '', bodyFat: '',
@@ -249,6 +276,7 @@ export function Step1({ onNext }: Step1Props) {
       visceralFat: '', metabolicAge: ''
     }
   });
+  const { register, handleSubmit, formState: { isValid }, setValue } = form;
 
   useLayoutEffect(() => {
     const d = new Date();
@@ -256,91 +284,75 @@ export function Step1({ onNext }: Step1Props) {
     setValue('timestamp', d.toISOString().slice(0, 16));
   }, [setValue]);
 
-  const weight = watch('weight');
-  const height = watch('height');
-  const timestamp = watch('timestamp');
-  const bmi = calcBMI(weight, height, unit);
-  const bmiI = bmiInfo(bmi);
-  const canGo = Boolean(timestamp && weight);
-
   return (
-    <form onSubmit={handleSubmit((values) => onNext(values, unit))}>
-      <div {...stylex.props(styles.pageTitle)}>Body Measurements</div>
-      <p {...stylex.props(styles.pageSub)}>Enter your measurements. Only weight is required.</p>
+    <FormProvider {...form}>
+      <form onSubmit={handleSubmit((values) => onNext(values, unit))}>
+        <div {...stylex.props(styles.pageTitle)}>Body Measurements</div>
+        <p {...stylex.props(styles.pageSub)}>Enter your measurements. Only weight is required.</p>
 
-      <div {...stylex.props(styles.rowHeader)}>
-        <div {...stylex.props(styles.sectionHeading, styles.sectionHeadingFlush)}>Date &amp; Time</div>
-      </div>
-      <Field label="Timestamp">
-        <input {...stylex.props(styles.input, styles.inputDatetime)} type="datetime-local" {...register('timestamp')} suppressHydrationWarning />
-      </Field>
-
-      <div {...stylex.props(styles.rowHeader, styles.rowHeaderSpaced)}>
-        <div {...stylex.props(styles.sectionHeading, styles.sectionHeadingFlush)}>Basic</div>
-        <div {...stylex.props(styles.unitToggle)}>
-          <button type="button" {...stylex.props(styles.unitBtn, unit === 'metric' && styles.unitBtnOn)} onClick={() => setUnit('metric')}>kg</button>
-          <button type="button" {...stylex.props(styles.unitBtn, unit === 'imperial' && styles.unitBtnOn)} onClick={() => setUnit('imperial')}>lbs</button>
+        <div {...stylex.props(styles.rowHeader)}>
+          <div {...stylex.props(styles.sectionHeading, styles.sectionHeadingFlush)}>Date &amp; Time</div>
         </div>
-      </div>
+        <Field label="Timestamp">
+          <input {...stylex.props(styles.input, styles.inputDatetime)} type="datetime-local" {...register('timestamp', { required: true })} suppressHydrationWarning />
+        </Field>
 
-      <Field label="Weight *">
-        <input {...stylex.props(styles.input)} type="number" placeholder="—" {...register('weight')} min="0" step="0.1" />
-        <span {...stylex.props(styles.unit)}>{wU}</span>
-      </Field>
+        <div {...stylex.props(styles.rowHeader, styles.rowHeaderSpaced)}>
+          <div {...stylex.props(styles.sectionHeading, styles.sectionHeadingFlush)}>Basic</div>
+          <div {...stylex.props(styles.unitToggle)}>
+            <button type="button" {...stylex.props(styles.unitBtn, unit === 'metric' && styles.unitBtnOn)} onClick={() => setUnit('metric')}>kg</button>
+            <button type="button" {...stylex.props(styles.unitBtn, unit === 'imperial' && styles.unitBtnOn)} onClick={() => setUnit('imperial')}>lbs</button>
+          </div>
+        </div>
 
-      <Field label="Height">
-        <input {...stylex.props(styles.input)} type="number" placeholder="—" {...register('height')} min="0" step="0.5" />
-        <span {...stylex.props(styles.unit)}>{hU}</span>
-      </Field>
+        <Field label="Weight *">
+          <input {...stylex.props(styles.input)} type="number" placeholder="—" {...register('weight', { required: true })} min="0" step="0.1" />
+          <span {...stylex.props(styles.unit)}>{wU}</span>
+        </Field>
 
-      <Field label="BMI" badge="AUTO CALCULATED">
-        {bmi
-          ? (
-            <>
-              <span {...stylex.props(styles.bmiVal)} style={{ color: bmiI?.color }}>{bmi}</span>
-              <span {...stylex.props(styles.bmiLabel)}>{bmiI?.label}</span>
-            </>
-          )
-          : (
-            <span {...stylex.props(styles.bmiEmpty)}>—</span>
-          )}
-      </Field>
+        <Field label="Height">
+          <input {...stylex.props(styles.input)} type="number" placeholder="—" {...register('height')} min="0" step="0.5" />
+          <span {...stylex.props(styles.unit)}>{hU}</span>
+        </Field>
 
-      <div {...stylex.props(styles.sectionHeading)}>Body Composition</div>
+        <BmiDisplay unit={unit} />
 
-      <Field label="Body Fat">
-        <input {...stylex.props(styles.input)} type="number" placeholder="—" {...register('bodyFat')} min="0" max="100" step="0.1" />
-        <span {...stylex.props(styles.unit)}>%</span>
-      </Field>
-      <Field label="Bone Mass">
-        <input {...stylex.props(styles.input)} type="number" placeholder="—" {...register('boneMass')} min="0" step="0.1" />
-        <span {...stylex.props(styles.unit)}>{wU}</span>
-      </Field>
-      <Field label="Muscle Mass">
-        <input {...stylex.props(styles.input)} type="number" placeholder="—" {...register('muscleMass')} min="0" step="0.1" />
-        <span {...stylex.props(styles.unit)}>{wU}</span>
-      </Field>
-      <Field label="Body Water">
-        <input {...stylex.props(styles.input)} type="number" placeholder="—" {...register('bodyWater')} min="0" max="100" step="0.1" />
-        <span {...stylex.props(styles.unit)}>%</span>
-      </Field>
+        <div {...stylex.props(styles.sectionHeading)}>Body Composition</div>
 
-      <div {...stylex.props(styles.sectionHeading)}>Advanced</div>
+        <Field label="Body Fat">
+          <input {...stylex.props(styles.input)} type="number" placeholder="—" {...register('bodyFat')} min="0" max="100" step="0.1" />
+          <span {...stylex.props(styles.unit)}>%</span>
+        </Field>
+        <Field label="Bone Mass">
+          <input {...stylex.props(styles.input)} type="number" placeholder="—" {...register('boneMass')} min="0" step="0.1" />
+          <span {...stylex.props(styles.unit)}>{wU}</span>
+        </Field>
+        <Field label="Muscle Mass">
+          <input {...stylex.props(styles.input)} type="number" placeholder="—" {...register('muscleMass')} min="0" step="0.1" />
+          <span {...stylex.props(styles.unit)}>{wU}</span>
+        </Field>
+        <Field label="Body Water">
+          <input {...stylex.props(styles.input)} type="number" placeholder="—" {...register('bodyWater')} min="0" max="100" step="0.1" />
+          <span {...stylex.props(styles.unit)}>%</span>
+        </Field>
 
-      <Field label="Visceral Fat">
-        <input {...stylex.props(styles.input)} type="number" placeholder="1–59" {...register('visceralFat')} min="1" max="59" step="1" />
-        <span {...stylex.props(styles.unit)}>rating</span>
-      </Field>
-      <Field label="Metabolic Age">
-        <input {...stylex.props(styles.input)} type="number" placeholder="—" {...register('metabolicAge')} min="0" step="1" />
-        <span {...stylex.props(styles.unit)}>yrs</span>
-      </Field>
+        <div {...stylex.props(styles.sectionHeading)}>Advanced</div>
 
-      <div {...stylex.props(styles.btnRow)}>
-        <button type="submit" {...stylex.props(styles.btn, !canGo && styles.btnDisabled)} disabled={!canGo}>
-          Continue <IconChevronRight size={16} />
-        </button>
-      </div>
-    </form>
+        <Field label="Visceral Fat">
+          <input {...stylex.props(styles.input)} type="number" placeholder="1–59" {...register('visceralFat')} min="1" max="59" step="1" />
+          <span {...stylex.props(styles.unit)}>rating</span>
+        </Field>
+        <Field label="Metabolic Age">
+          <input {...stylex.props(styles.input)} type="number" placeholder="—" {...register('metabolicAge')} min="0" step="1" />
+          <span {...stylex.props(styles.unit)}>yrs</span>
+        </Field>
+
+        <div {...stylex.props(styles.btnRow)}>
+          <button type="submit" {...stylex.props(styles.btn, !isValid && styles.btnDisabled)} disabled={!isValid}>
+            Continue <IconChevronRight size={16} />
+          </button>
+        </div>
+      </form>
+    </FormProvider>
   );
 }

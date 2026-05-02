@@ -56,7 +56,7 @@ html, body {
   transition: background 0.2s, color 0.2s;
 }
 body {
-  font-family: var(--font-dm-sans), -apple-system, sans-serif;
+  font-family: var(--font-inter), -apple-system, sans-serif;
   font-size: 15px;
   color: var(--fg);
   line-height: 1.5;

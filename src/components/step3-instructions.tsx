@@ -28,7 +28,7 @@ const styles = stylex.create({
     }
   },
   instrNum: {
-    fontFamily: 'var(--font-dm-mono), monospace',
+    fontFamily: 'var(--font-mono), monospace',
     fontSize: '12px',
     color: 'var(--fg-subtle)',
     fontWeight: 500,
@@ -62,7 +62,7 @@ const styles = stylex.create({
     }
   },
   instrDescCode: {
-    fontFamily: 'var(--font-dm-mono), monospace',
+    fontFamily: 'var(--font-mono), monospace',
     fontSize: '12.5px',
     backgroundColor: 'var(--code-bg)',
     paddingBlock: '1px',
@@ -85,13 +85,13 @@ const styles = stylex.create({
     columnGap: '4px'
   },
   screenshotLabel: {
-    fontFamily: 'var(--font-dm-mono), monospace',
+    fontFamily: 'var(--font-mono), monospace',
     fontSize: '10.5px',
     color: 'var(--fg-subtle)',
     letterSpacing: '0.04em'
   },
   screenshotSub: {
-    fontFamily: 'var(--font-dm-mono), monospace',
+    fontFamily: 'var(--font-mono), monospace',
     fontSize: '9.5px',
     color: 'var(--fg-subtle)',
     letterSpacing: '0.04em'

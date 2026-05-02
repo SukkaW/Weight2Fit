@@ -39,7 +39,7 @@ const styles = stylex.create({
     fontSize: '11px',
     fontWeight: 700,
     letterSpacing: '-0.3px',
-    fontFamily: 'var(--font-dm-mono), monospace',
+    fontFamily: 'var(--font-mono), monospace',
     flexShrink: 0
   },
   logoName: {

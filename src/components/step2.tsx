@@ -62,7 +62,7 @@ const styles = stylex.create({
     marginBottom: '3px'
   },
   summaryVal: {
-    fontFamily: 'var(--font-dm-mono), monospace',
+    fontFamily: 'var(--font-mono), monospace',
     fontSize: '15px',
     fontWeight: 500,
     color: 'var(--fg)'
@@ -93,7 +93,7 @@ const styles = stylex.create({
     maxWidth: '380px'
   },
   generateDescCode: {
-    fontFamily: 'var(--font-dm-mono), monospace',
+    fontFamily: 'var(--font-mono), monospace',
     fontSize: '12.5px',
     backgroundColor: 'var(--code-bg)',
     paddingBlock: '1px',
