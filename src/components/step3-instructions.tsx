@@ -135,7 +135,7 @@ export function Step3Instructions() {
           <div {...stylex.props(styles.instrBody)}>
             <div {...stylex.props(styles.instrTitle)}>Go to Health Stats</div>
             <div {...stylex.props(styles.instrDesc)}>
-              On the top right of the page, find the &ldquo;Cloud Upload&rdquo; icon button. You may just navigate directly with <a {...stylex.props(styles.instrDescLink)} href="https://connect.garmin.com/modern/health-stats/upload" target="_blank" rel="noopener noreferrer">this link</a>.
+              On the top right of the page, find the &ldquo;Cloud Upload&rdquo; icon button. You may just navigate directly with <a {...stylex.props(styles.instrDescLink)} href="https://connect.garmin.com/app/import-data" target="_blank" rel="noopener noreferrer">this link</a>.
             </div>
             <div {...stylex.props(styles.screenshot)}>
               <Image {...stylex.props(styles.screenshot_image)} src={screenshotUpload} alt="Garmin Connect Health Stats" style={{ width: '100%', height: 'auto' }} />
