@@ -21,8 +21,8 @@ importers:
         specifier: ^0.3.1
         version: 0.3.1(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       foxts:
-        specifier: ^5.4.1
-        version: 5.4.1
+        specifier: ^5.4.2
+        version: 5.4.2
       lucide-react:
         specifier: ^1.14.0
         version: 1.14.0(react@19.2.4)
@@ -1335,6 +1335,9 @@ packages:
 
   foxts@5.4.1:
     resolution: {integrity: sha512-v/k4gR+NtazTauirS9o1KzNII4x7vX5NsLVv2pN2apfcuBM/GMwQj09hUiKkDiJqAQEOF//ydDyXrztQpBmkJQ==}
+
+  foxts@5.4.2:
+    resolution: {integrity: sha512-FKzYjarnrPNwMOiqaGT6S+/V4jDd3nt/MuJK5CjmJla7VSfyA8ZKjYGcoAvIr17ldYKj79eBBEYiRrYklsDRFA==}
 
   gensync@1.0.0-beta.2:
     resolution: {integrity: sha512-3hN7NaskYvMDLQY55gnW3NQ+mesEAepTqlg+VEbj7zzqEMBVNhzcGYYeqFo/TlYz6eQiFcp1HcsCZO+nGgS8zg==}
@@ -3102,6 +3105,8 @@ snapshots:
       react-dom: 19.2.4(react@19.2.4)
 
   foxts@5.4.1: {}
+
+  foxts@5.4.2: {}
 
   gensync@1.0.0-beta.2: {}
 
