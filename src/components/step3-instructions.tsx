@@ -1,4 +1,12 @@
+'use client';
+
+import Image from 'next/image';
 import * as stylex from '@stylexjs/stylex';
+
+import screenshotSignIn from '@/screenshots/sign-in-to-garmin-connect.png';
+import screenshotHealthStats from '@/screenshots/find-health-stats-weight.png';
+import screenshotSelectFile from '@/screenshots/select-fit-file-generate-by-weight2fit.png';
+import screenshotUpload from '@/screenshots/garmin-connect-fit-upload.png';
 
 const styles = stylex.create({
   instrList: {
@@ -71,30 +79,13 @@ const styles = stylex.create({
   },
   screenshot: {
     marginTop: '14px',
-    height: '110px',
     borderRadius: '8px',
-    backgroundImage: 'repeating-linear-gradient(-45deg, var(--screenshot-a), var(--screenshot-a) 6px, var(--screenshot-b) 6px, var(--screenshot-b) 12px)',
     borderWidth: '1px',
     borderStyle: 'solid',
     borderColor: 'var(--line)',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexDirection: 'column',
-    rowGap: '4px',
-    columnGap: '4px'
-  },
-  screenshotLabel: {
-    fontFamily: 'var(--font-mono), monospace',
-    fontSize: '10.5px',
-    color: 'var(--fg-subtle)',
-    letterSpacing: '0.04em'
-  },
-  screenshotSub: {
-    fontFamily: 'var(--font-mono), monospace',
-    fontSize: '9.5px',
-    color: 'var(--fg-subtle)',
-    letterSpacing: '0.04em'
+    overflow: 'hidden',
+    position: 'relative',
+    aspectRatio: '16 / 9'
   },
   doneArea: {
     marginTop: '40px',
@@ -133,8 +124,7 @@ export function Step3Instructions() {
               and sign in to your account.
             </div>
             <div {...stylex.props(styles.screenshot)}>
-              <span {...stylex.props(styles.screenshotLabel)}>SCREENSHOT</span>
-              <span {...stylex.props(styles.screenshotSub)}>garmin-connect-login.png</span>
+              <Image src={screenshotSignIn} alt="Sign in to Garmin Connect" fill style={{ objectFit: 'cover' }} />
             </div>
           </div>
         </div>
@@ -144,11 +134,10 @@ export function Step3Instructions() {
           <div {...stylex.props(styles.instrBody)}>
             <div {...stylex.props(styles.instrTitle)}>Go to Health Stats</div>
             <div {...stylex.props(styles.instrDesc)}>
-              In the left sidebar, select &ldquo;Health Stats&rdquo;, then &ldquo;Body Composition&rdquo;.
+              On the top right of the page, find the &ldquo;Cloud Upload&rdquo; icon button. You may just navigate directly with <a {...stylex.props(styles.instrDescLink)} href="https://connect.garmin.com/modern/health-stats/upload" target="_blank" rel="noopener noreferrer">this link</a>.
             </div>
             <div {...stylex.props(styles.screenshot)}>
-              <span {...stylex.props(styles.screenshotLabel)}>SCREENSHOT</span>
-              <span {...stylex.props(styles.screenshotSub)}>garmin-health-stats.png</span>
+              <Image src={screenshotHealthStats} alt="Garmin Connect Health Stats" fill style={{ objectFit: 'cover' }} />
             </div>
           </div>
         </div>
@@ -158,11 +147,10 @@ export function Step3Instructions() {
           <div {...stylex.props(styles.instrBody)}>
             <div {...stylex.props(styles.instrTitle)}>Import the file</div>
             <div {...stylex.props(styles.instrDesc)}>
-              Click the import button (top-right). Drag your <code {...stylex.props(styles.instrDescCode)}>.fit</code> file into the dialog or click Browse to select it.
+              Drag your <code {...stylex.props(styles.instrDescCode)}>.fit</code> file into the dialog or click Browse to select it.
             </div>
             <div {...stylex.props(styles.screenshot)}>
-              <span {...stylex.props(styles.screenshotLabel)}>SCREENSHOT</span>
-              <span {...stylex.props(styles.screenshotSub)}>garmin-import-dialog.png</span>
+              <Image src={screenshotSelectFile} alt="Select .fit file to import" fill style={{ objectFit: 'cover' }} />
             </div>
           </div>
         </div>
@@ -170,13 +158,12 @@ export function Step3Instructions() {
         <div {...stylex.props(styles.instrItem)}>
           <div {...stylex.props(styles.instrNum)}>04</div>
           <div {...stylex.props(styles.instrBody)}>
-            <div {...stylex.props(styles.instrTitle)}>Confirm</div>
+            <div {...stylex.props(styles.instrTitle)}>Check</div>
             <div {...stylex.props(styles.instrDesc)}>
-              Garmin Connect previews the imported metrics. Click Import to confirm — data appears in your history immediately.
+              Now go to the &ldquo;Health Stats - Weight&rdquo; in the left sidebar and check if your data is there.
             </div>
             <div {...stylex.props(styles.screenshot)}>
-              <span {...stylex.props(styles.screenshotLabel)}>SCREENSHOT</span>
-              <span {...stylex.props(styles.screenshotSub)}>garmin-confirm.png</span>
+              <Image src={screenshotUpload} alt="Confirm data in Garmin Connect" fill style={{ objectFit: 'cover' }} />
             </div>
           </div>
         </div>

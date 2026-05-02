@@ -109,9 +109,8 @@ const styles = stylex.create({
     }
   },
   inputDatetime: {
-    fontFamily: 'var(--font-dm-sans), -apple-system, sans-serif',
+    fontFamily: 'var(--font-inter), -apple-system, sans-serif',
     fontSize: '13.5px'
-
   },
   unit: {
     fontSize: '12px',
