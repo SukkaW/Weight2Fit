@@ -1,36 +1,64 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Weight2Fit
 
-## Getting Started
+https://weight2fit.skk.moe
 
-First, run the development server:
+Convert body composition data into a Garmin-compatible `.fit` file — entirely in your browser, with no server involved.
+
+## Why I built this
+
+I have a **Xiaomi Body Composition Scale S400** and want to import its measurements into Garmin Connect to keep all my health data in one place.
+
+The problem: most third-party sync tools either require you to disable Garmin Connect's two-factor authentication, or relay your data through their own servers. I didn't want any of that.
+
+So I built this instead. It uses the [official Garmin JavaScript FIT SDK](https://www.npmjs.com/package/@garmin/fitsdk) to generate a `.fit` weight-scale file directly in your browser. Yes, you will have to manually type in your measurements, download the file, and manually import it into Garmin Connect website. But you will not give any untrusted code access to both your Garmin account and Xiaomi account.
+
+## How it works
+
+1. **Enter your body composition data** — weight is required; body fat %, bone mass, muscle mass, body water %, visceral fat rating, and metabolic age are optional.
+2. **Generate & download** — the app encodes everything into a standard Garmin FIT weight-scale file using the official SDK, running entirely client-side.
+3. **Import into Garmin Connect** — go to [connect.garmin.com](https://connect.garmin.com), navigate to Health Stats → Body Composition, and use the import button to upload the `.fit` file.
+
+## Tech stack
+
+- Next.js 16 with Static Export, no server
+- React 19
+- [StyleX](https://stylexjs.com/) (Facebook's AoT atomic CSS-in-JS)
+- [@garmin/fitsdk](https://www.npmjs.com/package/@garmin/fitsdk) — official Garmin JavaScript SDK
+- [react-hook-form](https://react-hook-form.com/) for form handling
+- [foxact](https://foxact.skk.moe/) · [foxts](https://github.com/SukkaW/foxts)
+
+## Running locally
+
+**Development**
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
+pnpm install
 pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+**Production**
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+pnpm install
+pnpm build
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+You will find the static files in the `out/` directory, which you can serve with any static hosting service.
 
-## Learn More
+## License
 
-To learn more about Next.js, take a look at the following resources:
+[Apache License 2.0](LICENSE)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+----
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+**weight2fit** © [Sukka](https://github.com/SukkaW), Released under the [Apache License 2.0](LICENSE) License.
+Authored and maintained by Sukka with help from contributors ([list](https://github.com/SukkaW/weight2fit/graphs/contributors)).
 
-## Deploy on Vercel
+> [Personal Website](https://skk.moe) · [Blog](https://blog.skk.moe) · GitHub [@SukkaW](https://github.com/SukkaW) · Telegram Channel [@SukkaChannel](https://t.me/SukkaChannel) · Mastodon [@sukka@acg.mn](https://acg.mn/@sukka) · Twitter [@isukkaw](https://twitter.com/isukkaw) · BlueSky [@skk.moe](https://bsky.app/profile/skk.moe)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+<p align="center">
+  <a href="https://github.com/sponsors/SukkaW/">
+    <img src="https://sponsor.cdn.skk.moe/sponsors.svg"/>
+  </a>
+</p>
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
