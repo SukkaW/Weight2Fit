@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev --webpack",
-    "build": "next build --webpack",
+    "build": "next build --webpack && cfpages-early-hints generate",
     "lint": "eslint --format=sukka ."
   },
   "dependencies": {
@@ -28,6 +28,7 @@
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "babel-plugin-react-compiler": "1.0.0",
+    "cfpages-early-hints": "^0.1.3",
     "eslint": "^10.3.0",
     "eslint-config-sukka": "^8.10.1",
     "eslint-formatter-sukka": "^8.10.1",
