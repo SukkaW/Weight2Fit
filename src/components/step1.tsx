@@ -326,7 +326,7 @@ export function Step1({ onNext }: Step1Props) {
           <input {...stylex.props(styles.input)} type="number" placeholder="—" {...register('boneMass')} min="0" step="0.1" />
           <span {...stylex.props(styles.unit)}>{wU}</span>
         </Field>
-        <Field label="Muscle Mass">
+        <Field label="Skeletal Muscle Mass">
           <input {...stylex.props(styles.input)} type="number" placeholder="—" {...register('muscleMass')} min="0" step="0.1" />
           <span {...stylex.props(styles.unit)}>{wU}</span>
         </Field>
