@@ -14,6 +14,8 @@
   --code-bg:      #f3f3f3;
   --screenshot-a: #f8f8f8;
   --screenshot-b: #f3f3f3;
+
+  color-scheme: light;
 }
 
 /* Dark tokens — applied via .dark class on <html> */
@@ -30,6 +32,8 @@
   --code-bg:      #222222;
   --screenshot-a: #1c1c1c;
   --screenshot-b: #181818;
+
+  color-scheme: dark !important;
 }
 
 /* System preference — only when no explicit class is set */
@@ -47,6 +51,8 @@
     --code-bg:      #222222;
     --screenshot-a: #1c1c1c;
     --screenshot-b: #181818;
+
+    color-scheme: dark !important;
   }
 }
 
