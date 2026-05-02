@@ -24,7 +24,9 @@ export interface BodyCompositionData {
   /** Basal metabolic rate in kcal/day */
   basalMet?: number,
   /** Active metabolic rate / daily calorie intake in kcal/day */
-  activeMet?: number
+  activeMet?: number,
+  /** BMI in kg/m² */
+  bmi?: number
 }
 
 const OPTIONAL_FIELDS = [
@@ -37,7 +39,8 @@ const OPTIONAL_FIELDS = [
   'physiqueRating',
   'metabolicAge',
   'basalMet',
-  'activeMet'
+  'activeMet',
+  'bmi'
 ] as const satisfies ReadonlyArray<keyof BodyCompositionData>;
 
 /**
