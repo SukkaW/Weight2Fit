@@ -1,0 +1,27 @@
+{
+  "name": "weight2fit",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint --format=sukka ."
+  },
+  "dependencies": {
+    "eslint-config-sukka": "^8.10.1",
+    "eslint-formatter-sukka": "^8.10.1",
+    "next": "16.2.4",
+    "react": "19.2.4",
+    "react-dom": "19.2.4"
+  },
+  "devDependencies": {
+    "@eslint-sukka/react": "^8.10.1",
+    "@types/node": "^25.6.0",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "babel-plugin-react-compiler": "1.0.0",
+    "typescript": "^6.0.3"
+  },
+  "packageManager": "pnpm@11.0.3"
+}
