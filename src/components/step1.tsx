@@ -1,6 +1,6 @@
 'use client';
 
-import { useDeferredValue, useMemo, useState } from 'react';
+import { useDeferredValue, useMemo } from 'react';
 import { Controller, FormProvider, useForm, useWatch } from 'react-hook-form';
 import type { ReactNode } from 'react';
 import * as stylex from '@stylexjs/stylex';
@@ -8,9 +8,10 @@ import { DateTimePicker } from 'react-datetime-picker';
 import type { FormValues, Unit } from '@/lib/types';
 import { calcBMI, bmiInfo } from '@/lib/bmi';
 import { IconChevronRight } from './icons';
-import { useLayoutEffect } from 'foxact/use-isomorphic-layout-effect';
+import { useLocalStorage } from 'foxact/use-local-storage';
 
 import 'react-datetime-picker/dist/DateTimePicker.css';
+// eslint-disable-next-line import-x/no-unresolved -- fuck eslint-plugin-import-x
 import 'react-calendar/dist/Calendar.css';
 import 'react-clock/dist/Clock.css';
 import './datetime-picker.css';
@@ -263,29 +264,69 @@ interface Step1Props {
   onNext: (values: FormValues, unit: Unit) => void
 }
 
+// Read a localStorage entry, falling back to '' when running on the server or when the key is absent
+function lsGet(key: string): string {
+  if (typeof window === 'undefined') return '';
+
+  try {
+    return localStorage.getItem(key) ?? '';
+  } catch {
+    return '';
+  }
+}
+
+// Persist a value; remove the key entirely when the value is empty
+function lsSet(key: string, value: string) {
+  if (typeof window === 'undefined') return;
+
+  try {
+    if (value) localStorage.setItem(key, value);
+    else localStorage.removeItem(key);
+  } catch {
+    // Ignore errors
+  }
+}
+
 export function Step1({ onNext }: Step1Props) {
-  const [unit, setUnit] = useState<Unit>('metric');
+  // Unit preference lives directly in localStorage — no useState wrapper needed
+  const [storedUnit, setStoredUnit] = useLocalStorage<string | null>('w2f:unit', 'metric', { raw: true });
+  const unit: Unit = storedUnit === 'imperial' ? 'imperial' : 'metric';
+
   const wU = unit === 'metric' ? 'kg' : 'lbs';
   const hU = unit === 'metric' ? 'cm' : 'in';
 
   const form = useForm<FormValues>({
     mode: 'onChange',
-    defaultValues: {
-      timestamp: null,
-      weight: '', height: '', bodyFat: '',
-      boneMass: '', muscleMass: '', bodyWater: '',
-      visceralFat: '', metabolicAge: ''
+    // Async defaultValues lets us read localStorage once on mount without any effects
+    defaultValues(): Promise<FormValues> {
+      return Promise.resolve({
+        timestamp: new Date(),
+        weight: '',
+        height: lsGet('w2f:height'),
+        bodyFat: '',
+        boneMass: lsGet('w2f:boneMass'),
+        muscleMass: '',
+        bodyWater: '',
+        visceralFat: lsGet('w2f:visceralFat'),
+        metabolicAge: lsGet('w2f:metabolicAge')
+      });
     }
   });
-  const { register, handleSubmit, formState: { isValid }, setValue, control } = form;
+  const { register, handleSubmit, formState: { isValid }, control } = form;
 
-  useLayoutEffect(() => {
-    setValue('timestamp', new Date());
-  }, [setValue]);
+  function handleFormSubmit(values: FormValues) {
+    // Persist rarely-changing fields only on a successful submit
+    lsSet('w2f:height', values.height);
+    lsSet('w2f:boneMass', values.boneMass);
+    lsSet('w2f:visceralFat', values.visceralFat);
+    lsSet('w2f:metabolicAge', values.metabolicAge);
+
+    onNext(values, unit);
+  }
 
   return (
     <FormProvider {...form}>
-      <form onSubmit={handleSubmit((values) => onNext(values, unit))}>
+      <form onSubmit={handleSubmit(handleFormSubmit)}>
         <div {...stylex.props(styles.pageTitle)}>Body Measurements</div>
         <p {...stylex.props(styles.pageSub)}>Enter your measurements. Only weight is required.</p>
 
@@ -299,8 +340,7 @@ export function Step1({ onNext }: Step1Props) {
             rules={{ required: true }}
             render={({ field }) => (
               <DateTimePicker
-                value={field.value}
-                onChange={(date: Date | null) => field.onChange(date)}
+                {...field}
                 format="yyyy-MM-dd HH:mm"
                 calendarProps={{
                   calendarType: 'gregory'
@@ -314,8 +354,8 @@ export function Step1({ onNext }: Step1Props) {
         <div {...stylex.props(styles.rowHeader, styles.rowHeaderSpaced)}>
           <div {...stylex.props(styles.sectionHeading, styles.sectionHeadingFlush)}>Basic</div>
           <div {...stylex.props(styles.unitToggle)}>
-            <button type="button" {...stylex.props(styles.unitBtn, unit === 'metric' && styles.unitBtnOn)} onClick={() => setUnit('metric')}>kg</button>
-            <button type="button" {...stylex.props(styles.unitBtn, unit === 'imperial' && styles.unitBtnOn)} onClick={() => setUnit('imperial')}>lbs</button>
+            <button type="button" {...stylex.props(styles.unitBtn, unit === 'metric' && styles.unitBtnOn)} onClick={() => setStoredUnit('metric')}>kg</button>
+            <button type="button" {...stylex.props(styles.unitBtn, unit === 'imperial' && styles.unitBtnOn)} onClick={() => setStoredUnit('imperial')}>lbs</button>
           </div>
         </div>
 
