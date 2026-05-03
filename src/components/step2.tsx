@@ -201,7 +201,7 @@ export function Step2({ form, unit, onBack, onNext }: Step2Props) {
     };
 
     const data: BodyCompositionData = {
-      timestamp: new Date(form.timestamp),
+      timestamp: form.timestamp!,
       weight: toKg(form.weight)
     };
     if (form.bodyFat) data.percentFat = Number.parseFloat(form.bodyFat);
@@ -230,7 +230,7 @@ export function Step2({ form, unit, onBack, onNext }: Step2Props) {
   const bmi = calcBMI(form.weight, form.height, unit);
 
   const summaryFields = [
-    { label: 'Timestamp', value: form.timestamp ? new Date(form.timestamp).toLocaleString() : null, unit: undefined },
+    { label: 'Timestamp', value: form.timestamp?.toLocaleString() ?? null, unit: undefined },
     { label: 'Weight', value: form.weight || null, unit: wU },
     { label: 'BMI', value: bmi, unit: undefined },
     { label: 'Body Fat', value: form.bodyFat || null, unit: '%' },

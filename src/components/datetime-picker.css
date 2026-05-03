@@ -1,0 +1,187 @@
+/* react-datetime-picker overrides — matched to app design tokens */
+
+/* Stretch the root to fill fieldInputWrap, keep everything on one line */
+.react-datetime-picker {
+  display: flex !important;
+  flex-grow: 1;
+  min-width: 0;
+}
+
+/* Remove default border — the field row already has a bottom border */
+.react-datetime-picker__wrapper {
+  flex-grow: 1;
+  flex-shrink: 1;
+  min-width: 0;
+  border: none !important;
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+}
+
+/* Input group: push contents to the right */
+.react-datetime-picker__inputGroup {
+  flex-grow: 1;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 0;
+  min-width: 0;
+}
+
+/* Fully reset each editable segment — strip ALL browser chrome */
+.react-datetime-picker__inputGroup__input {
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  appearance: none !important;
+  border: 0 !important;
+  outline: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
+  border-radius: 2px;
+  color: var(--fg) !important;
+  font-family: var(--font-mono), monospace !important;
+  font-size: 14px !important;
+  caret-color: var(--fg);
+}
+
+/* Only apply side padding to segments without a leading zero —
+   --hasLeadingZero uses a negative margin + padding trick to merge the
+   static "0" span with the editable digit; stomping it causes overlap. */
+.react-datetime-picker__inputGroup__input:not(.react-datetime-picker__inputGroup__input--hasLeadingZero) {
+  padding: 0 1px;
+}
+
+.react-datetime-picker__inputGroup__input:focus {
+  background: var(--accent-soft) !important;
+}
+
+/* Suppress the red :invalid highlight */
+.react-datetime-picker__inputGroup__input:invalid {
+  background: transparent !important;
+}
+
+/* Dividers and leading zeros */
+.react-datetime-picker__inputGroup__divider,
+.react-datetime-picker__inputGroup__leadingZero {
+  color: var(--fg-muted);
+  font-family: var(--font-mono), monospace;
+  font-size: 14px;
+  line-height: 1;
+}
+
+/* Calendar / clock toggle buttons */
+.react-datetime-picker__button {
+  flex-shrink: 0;
+  padding: 0 4px;
+  line-height: 0;
+}
+
+.react-datetime-picker__button svg {
+  stroke: var(--fg-subtle);
+  width: 14px;
+  height: 14px;
+}
+
+.react-datetime-picker__button:enabled:hover svg,
+.react-datetime-picker__button:enabled:focus svg {
+  stroke: var(--fg);
+}
+
+/* ── Popups ──────────────────────────────────────────────── */
+
+.react-datetime-picker__calendar,
+.react-datetime-picker__clock {
+  z-index: 50;
+}
+
+/* Calendar */
+.react-calendar {
+  background: var(--bg) !important;
+  border: 1px solid var(--line) !important;
+  border-radius: 10px !important;
+  overflow: hidden;
+  font-family: var(--font-inter), -apple-system, sans-serif;
+  font-size: 13px;
+  color: var(--fg);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+}
+
+.react-calendar__navigation button {
+  color: var(--fg);
+  font-size: 13px;
+  min-width: 36px;
+}
+
+.react-calendar__navigation button:enabled:hover,
+.react-calendar__navigation button:enabled:focus {
+  background-color: var(--code-bg);
+  border-radius: 6px;
+}
+
+.react-calendar__navigation button[disabled] {
+  background: none;
+  color: var(--fg-subtle);
+}
+
+.react-calendar__month-view__weekdays {
+  color: var(--fg-subtle);
+  font-size: 11px;
+}
+
+.react-calendar__month-view__weekdays__weekday abbr {
+  text-decoration: none;
+}
+
+.react-calendar__tile {
+  color: var(--fg);
+  font-size: 13px;
+  border-radius: 6px;
+}
+
+.react-calendar__tile:enabled:hover,
+.react-calendar__tile:enabled:focus {
+  background-color: var(--code-bg);
+}
+
+.react-calendar__tile--now {
+  background: var(--accent-soft) !important;
+  color: var(--accent) !important;
+  font-weight: 600;
+}
+
+.react-calendar__tile--active,
+.react-calendar__tile--active:enabled:hover,
+.react-calendar__tile--active:enabled:focus {
+  background: var(--fg) !important;
+  color: var(--bg) !important;
+}
+
+/* Clock popup container */
+.react-datetime-picker__clock {
+  background: var(--bg);
+  border: 1px solid var(--line) !important;
+  border-radius: 10px !important;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  padding: 20px !important;
+}
+
+/* Clock face & hands */
+.react-clock__face {
+  border-color: var(--line) !important;
+}
+
+.react-clock__hand__body,
+.react-clock__mark__body {
+  background-color: var(--fg) !important;
+}
+
+.react-clock__second-hand__body {
+  background-color: var(--accent) !important;
+}
+
+.react-clock__mark__number {
+  color: var(--fg-muted);
+  font-family: var(--font-mono), monospace;
+  font-size: 10px;
+}

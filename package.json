@@ -18,6 +18,9 @@
     "modern-normalize": "^3.0.1",
     "next": "16.2.4",
     "react": "19.2.4",
+    "react-calendar": "^6.0.1",
+    "react-clock": "^6.0.0",
+    "react-datetime-picker": "^7.0.2",
     "react-dom": "19.2.4",
     "react-hook-form": "^7.75.0"
   },

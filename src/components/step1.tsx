@@ -1,13 +1,19 @@
 'use client';
 
 import { useDeferredValue, useMemo, useState } from 'react';
-import { FormProvider, useForm, useWatch } from 'react-hook-form';
+import { Controller, FormProvider, useForm, useWatch } from 'react-hook-form';
 import type { ReactNode } from 'react';
 import * as stylex from '@stylexjs/stylex';
+import { DateTimePicker } from 'react-datetime-picker';
 import type { FormValues, Unit } from '@/lib/types';
 import { calcBMI, bmiInfo } from '@/lib/bmi';
 import { IconChevronRight } from './icons';
 import { useLayoutEffect } from 'foxact/use-isomorphic-layout-effect';
+
+import 'react-datetime-picker/dist/DateTimePicker.css';
+import 'react-calendar/dist/Calendar.css';
+import 'react-clock/dist/Clock.css';
+import './datetime-picker.css';
 
 const styles = stylex.create({
   pageTitle: {
@@ -107,10 +113,6 @@ const styles = stylex.create({
     '::-webkit-outer-spin-button': {
       WebkitAppearance: 'none'
     }
-  },
-  inputDatetime: {
-    fontFamily: 'var(--font-inter), -apple-system, sans-serif',
-    fontSize: '13.5px'
   },
   unit: {
     fontSize: '12px',
@@ -269,18 +271,16 @@ export function Step1({ onNext }: Step1Props) {
   const form = useForm<FormValues>({
     mode: 'onChange',
     defaultValues: {
-      timestamp: '',
+      timestamp: null,
       weight: '', height: '', bodyFat: '',
       boneMass: '', muscleMass: '', bodyWater: '',
       visceralFat: '', metabolicAge: ''
     }
   });
-  const { register, handleSubmit, formState: { isValid }, setValue } = form;
+  const { register, handleSubmit, formState: { isValid }, setValue, control } = form;
 
   useLayoutEffect(() => {
-    const d = new Date();
-    d.setSeconds(0, 0);
-    setValue('timestamp', d.toISOString().slice(0, 16));
+    setValue('timestamp', new Date());
   }, [setValue]);
 
   return (
@@ -293,7 +293,22 @@ export function Step1({ onNext }: Step1Props) {
           <div {...stylex.props(styles.sectionHeading, styles.sectionHeadingFlush)}>Date &amp; Time</div>
         </div>
         <Field label="Timestamp">
-          <input {...stylex.props(styles.input, styles.inputDatetime)} type="datetime-local" {...register('timestamp', { required: true })} suppressHydrationWarning />
+          <Controller
+            name="timestamp"
+            control={control}
+            rules={{ required: true }}
+            render={({ field }) => (
+              <DateTimePicker
+                value={field.value}
+                onChange={(date: Date | null) => field.onChange(date)}
+                format="yyyy-MM-dd HH:mm"
+                calendarProps={{
+                  calendarType: 'gregory'
+                }}
+                clearIcon={null}
+              />
+            )}
+          />
         </Field>
 
         <div {...stylex.props(styles.rowHeader, styles.rowHeaderSpaced)}>
