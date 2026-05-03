@@ -338,7 +338,7 @@ export function Step1({ onNext }: Step1Props) {
         <div {...stylex.props(styles.sectionHeading)}>Advanced</div>
 
         <Field label="Visceral Fat">
-          <input {...stylex.props(styles.input)} type="number" placeholder="1–59" {...register('visceralFat')} min="1" max="59" step="1" />
+          <input {...stylex.props(styles.input)} type="number" placeholder="—" {...register('visceralFat')} min="1" max="254" step="1" />
           <span {...stylex.props(styles.unit)}>rating</span>
         </Field>
         <Field label="Metabolic Age">

@@ -208,7 +208,7 @@ export function Step2({ form, unit, onBack, onNext }: Step2Props) {
     if (form.bodyWater) data.percentHydration = Number.parseFloat(form.bodyWater);
     if (form.boneMass) data.boneMass = toKg(form.boneMass);
     if (form.muscleMass) data.muscleMass = toKg(form.muscleMass);
-    if (form.visceralFat) data.visceralFatRating = Math.max(1, Math.min(59, Number.parseInt(form.visceralFat, 10)));
+    if (form.visceralFat) data.visceralFatRating = Math.max(1, Math.min(254, Number.parseInt(form.visceralFat, 10)));
     if (form.metabolicAge) data.metabolicAge = Number.parseInt(form.metabolicAge, 10);
     if (bmi) data.bmi = Number.parseFloat(bmi);
 
