@@ -11,7 +11,6 @@ import { IconChevronRight } from './icons';
 import { useLocalStorage } from 'foxact/use-local-storage';
 
 import 'react-datetime-picker/dist/DateTimePicker.css';
-// eslint-disable-next-line import-x/no-unresolved -- fuck eslint-plugin-import-x
 import 'react-calendar/dist/Calendar.css';
 import 'react-clock/dist/Clock.css';
 import './datetime-picker.css';
@@ -288,6 +287,13 @@ function lsSet(key: string, value: string) {
 }
 
 export function Step1({ onNext }: Step1Props) {
+  // react hook form has async default values, checked with React DevTools and internal _defaultValues
+  // and _formValues are already updated to the resolved values, but the form inputs remain empty as it
+  // doesn't properly re-render. May have something to do with `register`.
+  //
+  // Disable React Compiler for now.
+  'use no memo';
+
   // Unit preference lives directly in localStorage — no useState wrapper needed
   const [storedUnit, setStoredUnit] = useLocalStorage<string | null>('w2f:unit', 'metric', { raw: true });
   const unit: Unit = storedUnit === 'imperial' ? 'imperial' : 'metric';
@@ -296,10 +302,10 @@ export function Step1({ onNext }: Step1Props) {
   const hU = unit === 'metric' ? 'cm' : 'in';
 
   const form = useForm<FormValues>({
-    mode: 'onChange',
-    // Async defaultValues lets us read localStorage once on mount without any effects
-    defaultValues(): Promise<FormValues> {
-      return Promise.resolve({
+    async defaultValues() {
+      await Promise.resolve(); // Wait for a tick to avoid localStorage blocking the initial render
+
+      return {
         timestamp: new Date(),
         weight: '',
         height: lsGet('w2f:height'),
@@ -309,7 +315,7 @@ export function Step1({ onNext }: Step1Props) {
         bodyWater: '',
         visceralFat: lsGet('w2f:visceralFat'),
         metabolicAge: lsGet('w2f:metabolicAge')
-      });
+      } satisfies FormValues;
     }
   });
   const { register, handleSubmit, formState: { isValid }, control } = form;
@@ -360,12 +366,12 @@ export function Step1({ onNext }: Step1Props) {
         </div>
 
         <Field label="Weight *">
-          <input {...stylex.props(styles.input)} type="number" placeholder="—" {...register('weight', { required: true })} min="0" step="0.1" />
+          <input {...stylex.props(styles.input)} type="number" placeholder="—" {...register('weight', { required: true, min: 0 })} min="0" step="0.1" />
           <span {...stylex.props(styles.unit)}>{wU}</span>
         </Field>
 
         <Field label="Height">
-          <input {...stylex.props(styles.input)} type="number" placeholder="—" {...register('height')} min="0" step="0.5" />
+          <input {...stylex.props(styles.input)} type="number" placeholder="—" {...register('height', { min: 0 })} min="0" step="0.5" />
           <span {...stylex.props(styles.unit)}>{hU}</span>
         </Field>
 
@@ -374,30 +380,30 @@ export function Step1({ onNext }: Step1Props) {
         <div {...stylex.props(styles.sectionHeading)}>Body Composition</div>
 
         <Field label="Body Fat">
-          <input {...stylex.props(styles.input)} type="number" placeholder="—" {...register('bodyFat')} min="0" max="100" step="0.1" />
+          <input {...stylex.props(styles.input)} type="number" placeholder="—" {...register('bodyFat', { min: 0, max: 100 })} min="0" max="100" step="0.1" />
           <span {...stylex.props(styles.unit)}>%</span>
         </Field>
         <Field label="Bone Mass">
-          <input {...stylex.props(styles.input)} type="number" placeholder="—" {...register('boneMass')} min="0" step="0.1" />
+          <input {...stylex.props(styles.input)} type="number" placeholder="—" {...register('boneMass', { min: 0 })} min="0" step="0.1" />
           <span {...stylex.props(styles.unit)}>{wU}</span>
         </Field>
         <Field label="Skeletal Muscle Mass">
-          <input {...stylex.props(styles.input)} type="number" placeholder="—" {...register('muscleMass')} min="0" step="0.1" />
+          <input {...stylex.props(styles.input)} type="number" placeholder="—" {...register('muscleMass', { min: 0 })} min="0" step="0.1" />
           <span {...stylex.props(styles.unit)}>{wU}</span>
         </Field>
         <Field label="Body Water">
-          <input {...stylex.props(styles.input)} type="number" placeholder="—" {...register('bodyWater')} min="0" max="100" step="0.1" />
+          <input {...stylex.props(styles.input)} type="number" placeholder="—" {...register('bodyWater', { min: 0, max: 100 })} min="0" max="100" step="0.1" />
           <span {...stylex.props(styles.unit)}>%</span>
         </Field>
 
         <div {...stylex.props(styles.sectionHeading)}>Advanced</div>
 
         <Field label="Visceral Fat">
-          <input {...stylex.props(styles.input)} type="number" placeholder="—" {...register('visceralFat')} min="1" max="254" step="1" />
+          <input {...stylex.props(styles.input)} type="number" placeholder="—" {...register('visceralFat', { min: 1, max: 254 })} min="1" max="254" step="1" />
           <span {...stylex.props(styles.unit)}>rating</span>
         </Field>
         <Field label="Metabolic Age">
-          <input {...stylex.props(styles.input)} type="number" placeholder="—" {...register('metabolicAge')} min="0" step="1" />
+          <input {...stylex.props(styles.input)} type="number" placeholder="—" {...register('metabolicAge', { min: 0 })} min="0" step="1" />
           <span {...stylex.props(styles.unit)}>yrs</span>
         </Field>
 
