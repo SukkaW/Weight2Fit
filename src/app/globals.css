@@ -9,6 +9,7 @@
   --accent:       oklch(52% 0.18 240);
   --accent-soft:  oklch(52% 0.18 240 / 0.08);
   --success:      oklch(48% 0.16 160);
+  --error:        oklch(55% 0.2 25);
   --line:         #e8e8e8;
   --line-focus:   #0f0f0f;
   --code-bg:      #f3f3f3;
@@ -27,6 +28,7 @@
   --accent:       oklch(62% 0.18 240);
   --accent-soft:  oklch(62% 0.18 240 / 0.12);
   --success:      oklch(60% 0.16 160);
+  --error:        oklch(65% 0.2 25);
   --line:         #272727;
   --line-focus:   #f0f0f0;
   --code-bg:      #222222;

@@ -181,6 +181,15 @@ const styles = stylex.create({
     backgroundColor: 'var(--fg)',
     color: 'var(--bg)'
   },
+  fieldInvalid: {
+    borderBottomColor: {
+      default: 'var(--error)',
+      ':focus-within': 'var(--error)'
+    }
+  },
+  fieldLabelError: {
+    color: 'var(--error)'
+  },
   btn: {
     display: 'inline-flex',
     alignItems: 'center',
@@ -221,10 +230,10 @@ const styles = stylex.create({
   }
 });
 
-function Field({ label, badge, children }: { label: string, badge?: string, children: ReactNode }) {
+function Field({ label, badge, error, children }: { label: string, badge?: string, error?: boolean, children: ReactNode }) {
   return (
-    <div {...stylex.props(styles.field)}>
-      <div {...stylex.props(styles.fieldLabel)}>
+    <div {...stylex.props(styles.field, error && styles.fieldInvalid)}>
+      <div {...stylex.props(styles.fieldLabel, error && styles.fieldLabelError)}>
         {label}
         {badge && <span {...stylex.props(styles.badgeAuto)}>{badge}</span>}
       </div>
@@ -302,6 +311,7 @@ export function Step1({ onNext }: Step1Props) {
   const hU = unit === 'metric' ? 'cm' : 'in';
 
   const form = useForm<FormValues>({
+    mode: 'onTouched',
     async defaultValues() {
       await Promise.resolve(); // Wait for a tick to avoid localStorage blocking the initial render
 
@@ -318,7 +328,7 @@ export function Step1({ onNext }: Step1Props) {
       } satisfies FormValues;
     }
   });
-  const { register, handleSubmit, formState: { isValid }, control } = form;
+  const { register, handleSubmit, formState: { isValid, errors }, control } = form;
 
   function handleFormSubmit(values: FormValues) {
     // Persist rarely-changing fields only on a successful submit
@@ -365,12 +375,12 @@ export function Step1({ onNext }: Step1Props) {
           </div>
         </div>
 
-        <Field label="Weight *">
+        <Field label="Weight *" error={!!errors.weight}>
           <input {...stylex.props(styles.input)} type="number" placeholder="—" {...register('weight', { required: true, min: 0 })} min="0" step="0.1" />
           <span {...stylex.props(styles.unit)}>{wU}</span>
         </Field>
 
-        <Field label="Height">
+        <Field label="Height" error={!!errors.height}>
           <input {...stylex.props(styles.input)} type="number" placeholder="—" {...register('height', { min: 0 })} min="0" step="0.5" />
           <span {...stylex.props(styles.unit)}>{hU}</span>
         </Field>
@@ -379,30 +389,30 @@ export function Step1({ onNext }: Step1Props) {
 
         <div {...stylex.props(styles.sectionHeading)}>Body Composition</div>
 
-        <Field label="Body Fat">
+        <Field label="Body Fat" error={!!errors.bodyFat}>
           <input {...stylex.props(styles.input)} type="number" placeholder="—" {...register('bodyFat', { min: 0, max: 100 })} min="0" max="100" step="0.1" />
           <span {...stylex.props(styles.unit)}>%</span>
         </Field>
-        <Field label="Bone Mass">
+        <Field label="Bone Mass" error={!!errors.boneMass}>
           <input {...stylex.props(styles.input)} type="number" placeholder="—" {...register('boneMass', { min: 0 })} min="0" step="0.1" />
           <span {...stylex.props(styles.unit)}>{wU}</span>
         </Field>
-        <Field label="Skeletal Muscle Mass">
+        <Field label="Skeletal Muscle Mass" error={!!errors.muscleMass}>
           <input {...stylex.props(styles.input)} type="number" placeholder="—" {...register('muscleMass', { min: 0 })} min="0" step="0.1" />
           <span {...stylex.props(styles.unit)}>{wU}</span>
         </Field>
-        <Field label="Body Water">
+        <Field label="Body Water" error={!!errors.bodyWater}>
           <input {...stylex.props(styles.input)} type="number" placeholder="—" {...register('bodyWater', { min: 0, max: 100 })} min="0" max="100" step="0.1" />
           <span {...stylex.props(styles.unit)}>%</span>
         </Field>
 
         <div {...stylex.props(styles.sectionHeading)}>Advanced</div>
 
-        <Field label="Visceral Fat">
+        <Field label="Visceral Fat" error={!!errors.visceralFat}>
           <input {...stylex.props(styles.input)} type="number" placeholder="—" {...register('visceralFat', { min: 1, max: 254 })} min="1" max="254" step="1" />
           <span {...stylex.props(styles.unit)}>rating</span>
         </Field>
-        <Field label="Metabolic Age">
+        <Field label="Metabolic Age" error={!!errors.metabolicAge}>
           <input {...stylex.props(styles.input)} type="number" placeholder="—" {...register('metabolicAge', { min: 0 })} min="0" step="1" />
           <span {...stylex.props(styles.unit)}>yrs</span>
         </Field>
