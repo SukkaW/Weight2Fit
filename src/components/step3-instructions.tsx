@@ -133,9 +133,9 @@ export function Step3Instructions() {
         <div {...stylex.props(styles.instrItem)}>
           <div {...stylex.props(styles.instrNum)}>02</div>
           <div {...stylex.props(styles.instrBody)}>
-            <div {...stylex.props(styles.instrTitle)}>Go to Health Stats</div>
+            <div {...stylex.props(styles.instrTitle)}>Go to Import Data</div>
             <div {...stylex.props(styles.instrDesc)}>
-              On the top right of the page, find the &ldquo;Cloud Upload&rdquo; icon button. You may just navigate directly with <a {...stylex.props(styles.instrDescLink)} href="https://connect.garmin.com/app/import-data" target="_blank" rel="noopener noreferrer">this link</a>.
+              You may visit the import data page directly with <a {...stylex.props(styles.instrDescLink)} href="https://connect.garmin.com/app/import-data" target="_blank" rel="noopener noreferrer">this link</a>. If that doesn&rsquo;t work, you can also find the &ldquo;Cloud Upload&rdquo; icon button on the top right of the page.
             </div>
             <div {...stylex.props(styles.screenshot)}>
               <Image {...stylex.props(styles.screenshot_image)} src={screenshotUpload} alt="Garmin Connect Health Stats" style={{ width: '100%', height: 'auto' }} />
