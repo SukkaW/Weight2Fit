@@ -1,8 +1,8 @@
+/* eslint-disable sukka/react-prefer-foxact-persistent -- react-hook-form uncontrolled storage */
 'use client';
 
 import { useDeferredValue, useMemo } from 'react';
 import { Controller, FormProvider, useForm, useWatch } from 'react-hook-form';
-import type { ReactNode } from 'react';
 import * as stylex from '@stylexjs/stylex';
 import { DateTimePicker } from 'react-datetime-picker';
 import type { FormValues, Unit } from '@/lib/types';
@@ -230,7 +230,7 @@ const styles = stylex.create({
   }
 });
 
-function Field({ label, badge, error, children }: { label: string, badge?: string, error?: boolean, children: ReactNode }) {
+function Field({ label, badge, error, children }: { label: string, badge?: string, error?: boolean, children: React.ReactNode }) {
   return (
     <div {...stylex.props(styles.field, error && styles.fieldInvalid)}>
       <div {...stylex.props(styles.fieldLabel, error && styles.fieldLabelError)}>

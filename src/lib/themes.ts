@@ -1,3 +1,4 @@
+/* eslint-disable sukka/react-prefer-foxact-persistent -- outside of react */
 'use client';
 
 import { useCallback, useRef } from 'react';
@@ -36,6 +37,7 @@ function updateThemeToDom(theme: ColorScheme) {
       rootEl.classList.remove(DARK, LIGHT);
 
       // We already uses CSS to do "system" dark mode. But we need to update the theme-color meta tag
+      // eslint-disable-next-line sukka/react-prefer-foxact-use-media-query -- outside of react
       const preferDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
       metaThemeColorEls.forEach(el => el.setAttribute('content', preferDark
         ? themeColorMap.dark

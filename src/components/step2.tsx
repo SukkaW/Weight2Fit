@@ -193,6 +193,9 @@ interface Step2Props {
 export function Step2({ form, unit, onBack, onNext }: Step2Props) {
   const [generated, setGenerated] = useState(false);
 
+  const wU = unit === 'metric' ? 'kg' : 'lbs';
+  const bmi = calcBMI(form.weight, form.height, unit);
+
   function handleGenerate() {
     const isImperial = unit === 'imperial';
     const toKg = (v: string) => {
@@ -225,9 +228,6 @@ export function Step2({ form, unit, onBack, onNext }: Step2Props) {
 
     setGenerated(true);
   }
-
-  const wU = unit === 'metric' ? 'kg' : 'lbs';
-  const bmi = calcBMI(form.weight, form.height, unit);
 
   const summaryFields = [
     { label: 'Timestamp', value: form.timestamp?.toLocaleString() ?? null, unit: undefined },

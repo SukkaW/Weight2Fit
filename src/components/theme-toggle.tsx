@@ -1,7 +1,6 @@
 'use client';
 
 import { useSyncExternalStore } from 'react';
-import type { ReactNode } from 'react';
 import * as stylex from '@stylexjs/stylex';
 import { IconSun, IconMoon, IconMonitor } from './icons';
 import { useDarkMode, useSetDarkMode } from '../lib/themes';
@@ -43,7 +42,7 @@ const styles = stylex.create({
   }
 });
 
-const THEME_OPTIONS: Array<{ value: ColorScheme, icon: ReactNode, label: string }> = [
+const THEME_OPTIONS: Array<{ value: ColorScheme, icon: React.ReactNode, label: string }> = [
   { value: 'light', icon: <IconSun size={14} />, label: 'Light' },
   { value: 'auto', icon: <IconMonitor size={14} />, label: 'System' },
   { value: 'dark', icon: <IconMoon size={14} />, label: 'Dark' }

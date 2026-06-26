@@ -1,6 +1,5 @@
 'use client';
 
-import type { ReactNode } from 'react';
 import * as stylex from '@stylexjs/stylex';
 import { IconChevronLeft } from './icons';
 
@@ -71,7 +70,7 @@ const styles = stylex.create({
 });
 
 interface Step3Props {
-  children: ReactNode,
+  children: React.ReactNode,
   onBack: () => void,
   onReset: () => void
 }

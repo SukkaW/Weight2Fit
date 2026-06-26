@@ -1,14 +1,13 @@
 'use client';
 
 import { useState } from 'react';
-import type { ReactNode } from 'react';
 import type { FormValues, Unit } from '@/lib/types';
 import { Steps } from './steps';
 import { Step1 } from './step1';
 import { Step2 } from './step2';
 import { Step3 } from './step3';
 
-export function App({ step3Instructions }: { step3Instructions: ReactNode }) {
+export function App({ step3Instructions }: { step3Instructions: React.ReactNode }) {
   const [step, setStep] = useState<1 | 2 | 3>(1);
   const [formData, setFormData] = useState<{ values: FormValues, unit: Unit } | null>(null);
 
