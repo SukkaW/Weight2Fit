@@ -61,12 +61,11 @@ export function generateWeightFit(data: BodyCompositionData): Uint8Array<ArrayBu
 
   const weightScaleMesg: Record<string, number> = {
     timestamp: fitTimestamp,
-    // type:"weight" is not in NumericFieldTypes, so the SDK skips its scale factor (×100).
-    // Pre-scale manually: store as the raw uint16 integer Garmin expects.
-    weight: Math.round(data.weight * 100)
+    weight: data.weight
   };
 
-  for (const key of OPTIONAL_FIELDS) {
+  for (let i = 0, len = OPTIONAL_FIELDS.length; i < len; i++) {
+    const key = OPTIONAL_FIELDS[i];
     if (data[key] != null) {
       weightScaleMesg[key] = data[key];
     }

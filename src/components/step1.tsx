@@ -1,4 +1,3 @@
-/* eslint-disable sukka/react-prefer-foxact-persistent -- react-hook-form uncontrolled storage */
 'use client';
 
 import { useDeferredValue, useMemo } from 'react';
