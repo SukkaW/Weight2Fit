@@ -1,8 +1,8 @@
 import type { Metadata, Viewport } from 'next';
 import { Inter, JetBrains_Mono } from 'next/font/google';
 import { Header } from '@/components/header';
+import { ThemeScript } from '@/components/theme-script';
 
-import { tagged as javascript } from 'foxts/tagged';
 import { DarkModeProvider } from '@/lib/themes';
 
 import 'modern-normalize/modern-normalize.css';
@@ -25,22 +25,6 @@ const jetbrainsMono = JetBrains_Mono({
   display: 'swap'
 });
 
-/*
-  ((document, darkThemeColor, lightThemeColor) => {
-    try {
-      const mode = localStorage['user-color-scheme'];
-      if (mode === 'light' || mode === 'dark') {
-        document.documentElement.classList.add(mode);
-      }
-      const isDark = mode === 'dark' || (!mode && window.matchMedia('(prefers-color-scheme: dark)').matches);
-      document.querySelectorAll('meta[name="theme-color"]').forEach(
-        el => el.setAttribute('content', isDark ? darkThemeColor : lightThemeColor)
-      );
-    } catch (e) {};
-  })(document, '#111111', '#ffffff')
-*/
-const themeScript = javascript`((d,t,l)=>{try{const m=localStorage["user-color-scheme"];(m==="light"||m==="dark")&&d.documentElement.classList.add(m);const i=m==="dark"||(!m&&window.matchMedia("(prefers-color-scheme: dark)").matches);d.querySelectorAll('meta[name="theme-color"]').forEach(e=>e.setAttribute("content",i?t:l))}catch(e){}})(document,"#111111","#ffffff");`;
-
 const styles = stylex.create({
   wrap: {
     maxWidth: '560px',
@@ -58,7 +42,7 @@ export default function RootLayout({ children }: React.PropsWithChildren) {
     <html lang="en" suppressHydrationWarning className={`${inter.variable} ${jetbrainsMono.variable}`}>
       <head>
         <meta name="theme-color" content="#ffffff" />
-        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+        <ThemeScript />
       </head>
       <body suppressHydrationWarning>
         <DarkModeProvider>
